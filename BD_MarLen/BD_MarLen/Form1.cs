@@ -317,7 +317,6 @@ namespace BD_MarLen
 
         private void lucene_serach_Click(object sender, EventArgs e)
         {
-            var counter = 0;
             results.Rows.Clear();
             var query = search_field.Text.ToLower();
             var array = query.Split(' ').ToList();
@@ -395,7 +394,6 @@ namespace BD_MarLen
                     if (!string.IsNullOrEmpty(word))
                     {
                         var booleanQuery = new BooleanQuery();
-
                         var wild = new WildcardQuery(new Term("name_word", "*" + word + "*"));
                         var num = NumericRangeQuery.NewInt32Range("year", 1, number, number, true, true);
 
