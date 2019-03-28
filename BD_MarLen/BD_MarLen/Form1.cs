@@ -104,6 +104,8 @@ namespace BD_MarLen
 
             var searchAll = "SELECT* FROM movies";
 
+            var resultItems = new List<(int id, string name, string year)>();
+
             Cursor.Current = Cursors.WaitCursor;
 
             var boolfound = false;
@@ -113,9 +115,7 @@ namespace BD_MarLen
             {
                 conn.Open();
 
-                var
-                    cmd = new NpgsqlCommand(oneOfWordsSearchInName,
-                        conn); // первый параметр в скобках отвечает за способ поиска
+                var cmd = new NpgsqlCommand(oneOfWordsSearchInName, conn); // первый параметр в скобках отвечает за способ поиска
 
                 if (query == " ")
                 {
@@ -154,13 +154,12 @@ namespace BD_MarLen
                         year = "";
                     }
 
-                    results.Rows.Add(reader.GetInt32(0), reader.GetString(1), year);
+                    if(!resultItems.Any(f => f.id == reader.GetInt32(0)))
+                        resultItems.Add((reader.GetInt32(0), reader.GetString(1), year));
                 }
             }
 
-            using (var conn =
-                new NpgsqlConnection(
-                    "Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn = new NpgsqlConnection("Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
@@ -204,19 +203,16 @@ namespace BD_MarLen
                         year = "";
                     }
 
-                    results.Rows.Add(reader.GetInt32(0), reader.GetString(1), year);
+                    if (!resultItems.Any(f => f.id == reader.GetInt32(0)))
+                        resultItems.Add((reader.GetInt32(0), reader.GetString(1), year));
                 }
             }
 
-            using (var conn =
-                new NpgsqlConnection(
-                    "Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn = new NpgsqlConnection("Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
-                var
-                    cmd = new NpgsqlCommand(allWordsSearchInName,
-                        conn); // первый параметр в скобках отвечает за способ поиска
+                var cmd = new NpgsqlCommand(allWordsSearchInName, conn); // первый параметр в скобках отвечает за способ поиска
 
                 if (query == " ")
                 {
@@ -254,19 +250,16 @@ namespace BD_MarLen
                         year = "";
                     }
 
-                    results.Rows.Add(reader.GetInt32(0), reader.GetString(1), year);
+                    if (!resultItems.Any(f => f.id == reader.GetInt32(0)))
+                        resultItems.Add((reader.GetInt32(0), reader.GetString(1), year));
                 }
             }
 
-            using (var conn =
-                new NpgsqlConnection(
-                    "Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn = new NpgsqlConnection("Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
-                var
-                    cmd = new NpgsqlCommand(partSearchOrYearInName,
-                        conn); // первый параметр в скобках отвечает за способ поиска
+                var cmd = new NpgsqlCommand(partSearchOrYearInName, conn); // первый параметр в скобках отвечает за способ поиска
 
                 if (query == " ")
                 {
@@ -304,10 +297,16 @@ namespace BD_MarLen
                         year = "";
                     }
 
-                    results.Rows.Add(reader.GetInt32(0), reader.GetString(1), year);
+                    if (!resultItems.Any(f => f.id == reader.GetInt32(0)))
+                        resultItems.Add((reader.GetInt32(0), reader.GetString(1), year));
                 }
 
                 Cursor.Current = Cursors.Default;
+            }
+
+            foreach (var resultItem in resultItems)
+            {
+                results.Rows.Add(resultItem.id, resultItem.name, resultItem.year);
             }
         }
 
@@ -337,7 +336,8 @@ namespace BD_MarLen
                     foreach (var hit in res)
                     {
                         var foundDoc = searcher.Doc(hit.Doc);
-                        if(!totalResults.Any(f => f.GetField("id").GetInt32Value() == foundDoc.GetField("id").GetInt32Value()))
+                        if (!totalResults.Any(f =>
+                            f.GetField("id").GetInt32Value() == foundDoc.GetField("id").GetInt32Value()))
                             totalResults.Add(foundDoc);
                     }
                 }
@@ -364,7 +364,8 @@ namespace BD_MarLen
                     foreach (var hit in res)
                     {
                         var foundDoc = searcher.Doc(hit.Doc);
-                        if (!totalResults.Any(f => f.GetField("id").GetInt32Value() == foundDoc.GetField("id").GetInt32Value()))
+                        if (!totalResults.Any(f =>
+                            f.GetField("id").GetInt32Value() == foundDoc.GetField("id").GetInt32Value()))
                             totalResults.Add(foundDoc);
                     }
                 }
@@ -404,22 +405,21 @@ namespace BD_MarLen
                         foreach (var hit in res)
                         {
                             var foundDoc = searcher.Doc(hit.Doc);
-                            if (!totalResults.Any(f => f.GetField("id").GetInt32Value() == foundDoc.GetField("id").GetInt32Value()))
+                            if (!totalResults.Any(f =>
+                                f.GetField("id").GetInt32Value() == foundDoc.GetField("id").GetInt32Value()))
                                 totalResults.Add(foundDoc);
-                            
                         }
                     }
                 }
             }
 
-            
+
             foreach (var doc in totalResults)
             {
                 results.Rows.Add(doc.GetField("id").GetInt32Value().ToString(),
                     doc.GetValues("full_name")[0],
                     doc.GetField("year").GetInt32Value().ToString());
             }
-            
         }
     }
 }
