@@ -40,11 +40,11 @@
             this.search_but = new System.Windows.Forms.Button();
             this.search_field = new System.Windows.Forms.TextBox();
             this.results = new System.Windows.Forms.DataGridView();
-            this.lucene_serach = new System.Windows.Forms.Button();
-            this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.year = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lucene_serach = new System.Windows.Forms.Button();
+            this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.results)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).BeginInit();
             this.SuspendLayout();
@@ -58,7 +58,7 @@
             this.search_but.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.search_but.Location = new System.Drawing.Point(135, 75);
             this.search_but.Name = "search_but";
-            this.search_but.Size = new System.Drawing.Size(96, 44);
+            this.search_but.Size = new System.Drawing.Size(101, 44);
             this.search_but.TabIndex = 0;
             this.search_but.Text = "Найти";
             this.search_but.UseVisualStyleBackColor = false;
@@ -122,25 +122,6 @@
             this.results.Size = new System.Drawing.Size(700, 661);
             this.results.TabIndex = 3;
             // 
-            // lucene_serach
-            // 
-            this.lucene_serach.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.lucene_serach.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lucene_serach.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lucene_serach.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Bold);
-            this.lucene_serach.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lucene_serach.Location = new System.Drawing.Point(265, 75);
-            this.lucene_serach.Name = "lucene_serach";
-            this.lucene_serach.Size = new System.Drawing.Size(150, 44);
-            this.lucene_serach.TabIndex = 4;
-            this.lucene_serach.Text = "Поиск Lucene";
-            this.lucene_serach.UseVisualStyleBackColor = false;
-            this.lucene_serach.Click += new System.EventHandler(this.lucene_serach_Click);
-            // 
-            // form1BindingSource
-            // 
-            this.form1BindingSource.DataSource = typeof(BD_MarLen.Form1);
-            // 
             // id
             // 
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(237)))), ((int)(((byte)(225)))));
@@ -166,6 +147,25 @@
             this.year.Name = "year";
             this.year.ReadOnly = true;
             this.year.Width = 140;
+            // 
+            // lucene_serach
+            // 
+            this.lucene_serach.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lucene_serach.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lucene_serach.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lucene_serach.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Bold);
+            this.lucene_serach.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lucene_serach.Location = new System.Drawing.Point(256, 75);
+            this.lucene_serach.Name = "lucene_serach";
+            this.lucene_serach.Size = new System.Drawing.Size(160, 44);
+            this.lucene_serach.TabIndex = 4;
+            this.lucene_serach.Text = "Поиск Lucene";
+            this.lucene_serach.UseVisualStyleBackColor = false;
+            this.lucene_serach.Click += new System.EventHandler(this.lucene_serach_Click);
+            // 
+            // form1BindingSource
+            // 
+            this.form1BindingSource.DataSource = typeof(BD_MarLen.Form1);
             // 
             // Form1
             // 
