@@ -36,7 +36,7 @@ namespace BD_MarLen
             var boolfound = false;
             using (var conn =
                 new NpgsqlConnection(
-                    "Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
@@ -96,6 +96,7 @@ namespace BD_MarLen
 
             var oneOfWordsSearchInName =
                 "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' OR name ILIKE @string || ' %' OR name ILIKE '% ' || @string OR name = @string LIMIT 10";
+            //= "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' LIMIT 10";
             var partSearchInName = "SELECT * FROM movies WHERE name ILIKE '%' || @string || '%' LIMIT 10";
             var allWordsSearchInName = "SELECT * FROM movies WHERE name = @string LIMIT 10";
             var partSearchOrYearInName = queryIsString == 0
@@ -111,7 +112,7 @@ namespace BD_MarLen
             var boolfound = false;
             using (var conn =
                 new NpgsqlConnection(
-                    "Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
@@ -159,7 +160,7 @@ namespace BD_MarLen
                 }
             }
 
-            using (var conn = new NpgsqlConnection("Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn = new NpgsqlConnection("Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
@@ -208,7 +209,7 @@ namespace BD_MarLen
                 }
             }
 
-            using (var conn = new NpgsqlConnection("Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn = new NpgsqlConnection("Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
@@ -255,7 +256,7 @@ namespace BD_MarLen
                 }
             }
 
-            using (var conn = new NpgsqlConnection("Server=84.201.147.162; Port=5432; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn = new NpgsqlConnection("Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
