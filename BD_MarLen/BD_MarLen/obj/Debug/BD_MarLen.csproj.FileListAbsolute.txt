@@ -262,3 +262,9 @@ C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\obj\Debug\BD_MarLen.
 C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\obj\Debug\BD_MarLen.csproj.CopyComplete
 C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\obj\Debug\BD_MarLen.exe
 C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\obj\Debug\BD_MarLen.pdb
+C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\bin\Debug\Lucene.Net.QueryParser.dll
+C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\bin\Debug\Lucene.Net.Sandbox.dll
+C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\bin\Debug\Lucene.Net.QueryParser.pdb
+C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\bin\Debug\Lucene.Net.QueryParser.xml
+C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\bin\Debug\Lucene.Net.Sandbox.pdb
+C:\Users\Marinka\Documents\GitHub\girls\BD_MarLen\BD_MarLen\bin\Debug\Lucene.Net.Sandbox.xml

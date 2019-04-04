@@ -45,6 +45,12 @@
     <Reference Include="Lucene.Net.Queries, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Queries.4.8.0-beta00005\lib\net45\Lucene.Net.Queries.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net.QueryParser, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.QueryParser.4.8.0-beta00005\lib\net45\Lucene.Net.QueryParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Sandbox, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.Sandbox.4.8.0-beta00005\lib\net45\Lucene.Net.Sandbox.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=4.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.0.5\lib\net451\Npgsql.dll</HintPath>
     </Reference>

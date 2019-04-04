@@ -9,6 +9,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
+using Lucene.Net.QueryParsers.Classic;
 using static System.Int32;
 
 namespace BD_MarLen
@@ -66,16 +67,10 @@ namespace BD_MarLen
                         TryParse(reader.GetInt16(2).ToString(), out yearInt);
 
                         var doc = new Document();
-                        doc.Add(new Field("full_name", source_name, StringField.TYPE_STORED));
-                        //var word = source.name.Split(' ')[0];
-                        foreach (var word in source_name.Split(' '))
-                        {
-                            if (!string.IsNullOrEmpty(word))
-                                doc.Add(new Field("name_word", word, TextField.TYPE_STORED));
-                        }
-
+                        doc.Add(new TextField("name", source_name, Field.Store.YES));
                         doc.Add(new StoredField("id", source_id));
                         doc.Add(new Int32Field("year", yearInt, Field.Store.YES));
+                        writer1.AddDocument(doc);
                         writer1.AddDocument(doc);
                         results.Rows.Add(reader.GetInt32(0), reader.GetString(1), yearInt.ToString());
                     }
@@ -324,14 +319,14 @@ namespace BD_MarLen
 
             var totalResults = new List<Document>();
             //одно слово
+            QueryParser parser = new QueryParser(AppLuceneVersion, "name", analyzer);
             var phrase = new MultiPhraseQuery();
             foreach (var word in array)
             {
-                phrase = new MultiPhraseQuery();
-                if (!string.IsNullOrEmpty(word))
+                var q = parser.Parse(query);
+                if (!String.IsNullOrEmpty(word))
                 {
-                    phrase.Add(new Term("name_word", word));
-                    var res = searcher.Search(phrase, 10).ScoreDocs;
+                    var res = searcher.Search(q, 10).ScoreDocs;
                     foreach (var hit in res)
                     {
                         var foundDoc = searcher.Doc(hit.Doc);
@@ -344,7 +339,7 @@ namespace BD_MarLen
 
             // полное название
             phrase = new MultiPhraseQuery();
-            phrase.Add(new Term("full_name", query));
+            phrase.Add(new Term("name", query));
             var hits = searcher.Search(phrase, 10).ScoreDocs;
             foreach (var hit in hits)
             {
@@ -358,7 +353,7 @@ namespace BD_MarLen
             {
                 if (!string.IsNullOrEmpty(word))
                 {
-                    var wild = new WildcardQuery(new Term("name_word", "*" + word + "*"));
+                    var wild = new WildcardQuery(new Term("name", "*" + word + "*"));
                     var res = searcher.Search(wild, 10).ScoreDocs;
                     foreach (var hit in res)
                     {
@@ -394,7 +389,7 @@ namespace BD_MarLen
                     if (!string.IsNullOrEmpty(word))
                     {
                         var booleanQuery = new BooleanQuery();
-                        var wild = new WildcardQuery(new Term("name_word", "*" + word + "*"));
+                        var wild = new WildcardQuery(new Term("name", "*" + word + "*"));
                         var num = NumericRangeQuery.NewInt32Range("year", 1, number, number, true, true);
 
                         booleanQuery.Add(wild, Occur.SHOULD);
@@ -415,7 +410,7 @@ namespace BD_MarLen
             foreach (var doc in totalResults)
             {
                 results.Rows.Add(doc.GetField("id").GetInt32Value().ToString(),
-                    doc.GetValues("full_name")[0],
+                    doc.GetValues("name")[0],
                     doc.GetField("year").GetInt32Value().ToString());
             }
         }
