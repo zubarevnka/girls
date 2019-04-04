@@ -95,8 +95,7 @@ namespace BD_MarLen
             TryParse(query, out queryIsString);
 
             var oneOfWordsSearchInName =
-                "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' OR name ILIKE @string || ' %' OR name ILIKE '% ' || @string OR name = @string LIMIT 10";
-            //= "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' LIMIT 10";
+                 "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' LIMIT 10";
             var partSearchInName = "SELECT * FROM movies WHERE name ILIKE '%' || @string || '%' LIMIT 10";
             var allWordsSearchInName = "SELECT * FROM movies WHERE name = @string LIMIT 10";
             var partSearchOrYearInName = queryIsString == 0
