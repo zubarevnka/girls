@@ -338,7 +338,6 @@ namespace BD_MarLen
             }
 
             // полное название
-            phrase = new MultiPhraseQuery();
             phrase.Add(new Term("name", query));
             var hits = searcher.Search(phrase, 10).ScoreDocs;
             foreach (var hit in hits)
