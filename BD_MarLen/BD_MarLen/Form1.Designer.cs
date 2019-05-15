@@ -1,4 +1,6 @@
-﻿namespace BD_MarLen
+﻿using System;
+
+namespace BD_MarLen
 {
     partial class Form1
     {
@@ -45,6 +47,7 @@
             this.year = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lucene_serach = new System.Windows.Forms.Button();
             this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.results)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).BeginInit();
             this.SuspendLayout();
@@ -54,7 +57,7 @@
             this.search_but.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(59)))), ((int)(((byte)(40)))));
             this.search_but.Cursor = System.Windows.Forms.Cursors.Hand;
             this.search_but.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.search_but.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.search_but.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.search_but.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.search_but.Location = new System.Drawing.Point(135, 75);
             this.search_but.Name = "search_but";
@@ -67,11 +70,11 @@
             // search_field
             // 
             this.search_field.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.search_field.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.search_field.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.search_field.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.search_field.Location = new System.Drawing.Point(135, 34);
             this.search_field.Name = "search_field";
-            this.search_field.Size = new System.Drawing.Size(700, 25);
+            this.search_field.Size = new System.Drawing.Size(700, 26);
             this.search_field.TabIndex = 1;
             this.search_field.TextChanged += new System.EventHandler(this.search_field_TextChanged);
             // 
@@ -79,7 +82,7 @@
             // 
             this.results.AllowUserToAddRows = false;
             this.results.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)), true);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)), true);
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue;
             this.results.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.results.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
@@ -87,7 +90,7 @@
             this.results.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("HelveticaNeueCyr", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.DarkSlateGray;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -100,7 +103,7 @@
             this.year});
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.DarkSlateGray;
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -112,7 +115,7 @@
             this.results.ReadOnly = true;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.DarkSlateGray;
             dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -153,7 +156,7 @@
             this.lucene_serach.BackColor = System.Drawing.Color.DarkSlateGray;
             this.lucene_serach.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lucene_serach.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lucene_serach.Font = new System.Drawing.Font("HelveticaNeueCyr", 12F, System.Drawing.FontStyle.Bold);
+            this.lucene_serach.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.lucene_serach.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lucene_serach.Location = new System.Drawing.Point(256, 75);
             this.lucene_serach.Name = "lucene_serach";
@@ -167,12 +170,26 @@
             // 
             this.form1BindingSource.DataSource = typeof(BD_MarLen.Form1);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(685, 96);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(150, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Export full movies";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(delegate(object o, EventArgs args)
+            {
+                this.button1_Click_1(o, args);
+            });
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(984, 861);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.lucene_serach);
             this.Controls.Add(this.results);
             this.Controls.Add(this.search_field);
@@ -198,6 +215,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn year;
+        private System.Windows.Forms.Button button1;
     }
 }
 

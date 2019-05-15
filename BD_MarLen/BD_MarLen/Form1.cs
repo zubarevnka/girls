@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
 using Lucene.Net.Analysis.Standard;
@@ -10,6 +11,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using Lucene.Net.QueryParsers.Classic;
+using RestSharp;
 using static System.Int32;
 
 namespace BD_MarLen
@@ -412,6 +414,135 @@ namespace BD_MarLen
                     doc.GetValues("name")[0],
                     doc.GetField("year").GetInt32Value().ToString());
             }
+        }
+
+        private async Task button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                var count = 100;
+
+                var client = new RestClient("http://db.mirvoda.com");
+
+
+                var ids = new List<string>();
+
+                var movies = new List<Movie>();
+
+                using (var conn =
+                    new NpgsqlConnection(
+                        "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+                {
+                    conn.Open();
+                    var cmd = new NpgsqlCommand($"SELECT * FROM movies LIMIT {count}", conn);
+
+                    using (var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                    {
+                        while (await reader.ReadAsync().ConfigureAwait(false))
+                        {
+                            try
+                            {
+                                var value = reader.GetValue(0);
+                                ids.Add(formatImdbId(value.ToString()));
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                }
+
+                foreach (var singleId in ids)
+                {
+                    var req = new RestRequest($"movies/{singleId}");
+                    req.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
+                    var a = await client.ExecuteTaskAsync<RootObject>(req);
+                    var m = a.Data.movie.FirstOrDefault();
+                    movies.Add(m);
+                }
+
+                var bp = 0;
+
+                await WriteMovie(movies);
+            }
+            catch
+
+            {
+            }
+        }
+
+
+        private string formatImdbId(string Id)
+        {
+            var idRequiredLength = 7;
+
+            if (Id.Length < idRequiredLength)
+            {
+                var missing = idRequiredLength - Id.Length;
+
+                return Id.Insert(0, new string('0', missing));
+            }
+
+            return Id;
+        }
+
+        private async Task WriteMovie(List<Movie> extendedMovies)
+        {
+            try
+            {
+                var connectionString =
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls";
+
+
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    await conn.OpenAsync().ConfigureAwait(false);
+
+                    foreach (var movie in extendedMovies)
+                    {
+                        var command =
+                            "INSERT INTO extended (id, name, premiere_date, genres, director, stars, storyline, synopsis, rating) " +
+                            "VALUES (@id, @name, @premiere_date, @genres, @director, @stars, @storyline, @synopsis, @rating)";
+
+                        using (var cmd = new NpgsqlCommand(command, conn))
+                        {
+                            cmd.Parameters.AddWithValue("id", int.Parse(movie.id));
+                            cmd.Parameters.AddWithValue("name", movie.title);
+                            cmd.Parameters.AddWithValue("premiere_date", movie.release_dates);
+                            cmd.Parameters.AddWithValue("genres", movie.genres);
+                            cmd.Parameters.AddWithValue("director", movie.directors);
+                            cmd.Parameters.AddWithValue("stars", movie.top_3_cast);
+                            cmd.Parameters.AddWithValue("storyline", movie.storyline);
+                            cmd.Parameters.AddWithValue("synopsis", movie.synopsis);
+                            cmd.Parameters.AddWithValue("rating", movie.rating);
+
+                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        public class Movie
+        {
+            public List<string> directors { get; set; }
+            public List<string> genres { get; set; }
+            public string id { get; set; }
+            public int rating { get; set; }
+            public List<string> release_dates { get; set; }
+            public string storyline { get; set; }
+            public string synopsis { get; set; }
+            public string title { get; set; }
+            public List<string> top_3_cast { get; set; }
+            public int year { get; set; }
+        }
+
+        public class RootObject
+        {
+            public List<Movie> movie { get; set; }
         }
     }
 }
