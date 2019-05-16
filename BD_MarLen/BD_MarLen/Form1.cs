@@ -92,7 +92,7 @@ namespace BD_MarLen
             TryParse(query, out queryIsString);
 
             var oneOfWordsSearchInName =
-                 "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' LIMIT 10";
+                "SELECT * FROM movies WHERE name ILIKE '% ' || @string || ' %' LIMIT 10";
             var partSearchInName = "SELECT * FROM movies WHERE name ILIKE '%' || @string || '%' LIMIT 10";
             var allWordsSearchInName = "SELECT * FROM movies WHERE name = @string LIMIT 10";
             var partSearchOrYearInName = queryIsString == 0
@@ -112,7 +112,8 @@ namespace BD_MarLen
             {
                 conn.Open();
 
-                var cmd = new NpgsqlCommand(oneOfWordsSearchInName, conn); // первый параметр в скобках отвечает за способ поиска
+                var cmd = new NpgsqlCommand(oneOfWordsSearchInName,
+                    conn); // первый параметр в скобках отвечает за способ поиска
 
                 if (query == " ")
                 {
@@ -151,12 +152,14 @@ namespace BD_MarLen
                         year = "";
                     }
 
-                    if(!resultItems.Any(f => f.id == reader.GetInt32(0)))
+                    if (!resultItems.Any(f => f.id == reader.GetInt32(0)))
                         resultItems.Add((reader.GetInt32(0), reader.GetString(1), year));
                 }
             }
 
-            using (var conn = new NpgsqlConnection("Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn =
+                new NpgsqlConnection(
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
@@ -205,11 +208,14 @@ namespace BD_MarLen
                 }
             }
 
-            using (var conn = new NpgsqlConnection("Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn =
+                new NpgsqlConnection(
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
-                var cmd = new NpgsqlCommand(allWordsSearchInName, conn); // первый параметр в скобках отвечает за способ поиска
+                var cmd = new NpgsqlCommand(allWordsSearchInName,
+                    conn); // первый параметр в скобках отвечает за способ поиска
 
                 if (query == " ")
                 {
@@ -252,11 +258,14 @@ namespace BD_MarLen
                 }
             }
 
-            using (var conn = new NpgsqlConnection("Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            using (var conn =
+                new NpgsqlConnection(
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
                 conn.Open();
 
-                var cmd = new NpgsqlCommand(partSearchOrYearInName, conn); // первый параметр в скобках отвечает за способ поиска
+                var cmd = new NpgsqlCommand(partSearchOrYearInName,
+                    conn); // первый параметр в скобках отвечает за способ поиска
 
                 if (query == " ")
                 {
@@ -418,41 +427,72 @@ namespace BD_MarLen
 
         private async Task button1_Click_1(object sender, EventArgs e)
         {
-            try
+            var count = 20000;
+
+            var client = new RestClient("http://db.mirvoda.com");
+
+
+            var movies = new List<Movie>();
+            var ids = new List<string>();
+
+
+            var extIds = new List<string>();
+            using (var conn =
+                new NpgsqlConnection(
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
             {
-                var count = 100;
+                conn.Open();
+                var cmd = new NpgsqlCommand($"SELECT * FROM extended LIMIT {count}", conn);
 
-                var client = new RestClient("http://db.mirvoda.com");
-
-
-                var ids = new List<string>();
-
-                var movies = new List<Movie>();
-
-                using (var conn =
-                    new NpgsqlConnection(
-                        "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+                using (var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                 {
-                    conn.Open();
-                    var cmd = new NpgsqlCommand($"SELECT * FROM movies LIMIT {count}", conn);
-
-                    using (var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                    while (await reader.ReadAsync().ConfigureAwait(false))
                     {
-                        while (await reader.ReadAsync().ConfigureAwait(false))
+                        try
                         {
-                            try
-                            {
-                                var value = reader.GetValue(0);
-                                ids.Add(formatImdbId(value.ToString()));
-                            }
-                            catch
-                            {
-                            }
+                            var value = reader.GetValue(0);
+                            extIds.Add(formatImdbId(value.ToString()));
+                        }
+                        catch (Exception ex)
+                        {
+//                            MessageBox.Show(ex.Message);
                         }
                     }
                 }
+            }
 
-                foreach (var singleId in ids)
+            using (var conn =
+                new NpgsqlConnection(
+                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls"))
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand($"SELECT * FROM movies LIMIT {count}", conn);
+
+                using (var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                {
+                    while (await reader.ReadAsync().ConfigureAwait(false))
+                    {
+                        try
+                        {
+                            var value = reader.GetValue(0);
+                            var imdbId = formatImdbId(value.ToString());
+
+                            if (!extIds.Contains(imdbId))
+                            {
+                                ids.Add(imdbId);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+//                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                }
+            }
+            
+            foreach (var singleId in ids)
+            {
+                try
                 {
                     var req = new RestRequest($"movies/{singleId}");
                     req.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
@@ -460,45 +500,29 @@ namespace BD_MarLen
                     var m = a.Data.movie.FirstOrDefault();
                     movies.Add(m);
                 }
-
-                var bp = 0;
-
-                await WriteMovie(movies);
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch
 
-            {
-            }
+            await WriteMovie(movies);
         }
 
-
-        private string formatImdbId(string Id)
-        {
-            var idRequiredLength = 7;
-
-            if (Id.Length < idRequiredLength)
-            {
-                var missing = idRequiredLength - Id.Length;
-
-                return Id.Insert(0, new string('0', missing));
-            }
-
-            return Id;
-        }
 
         private async Task WriteMovie(List<Movie> extendedMovies)
         {
-            try
+            var connectionString =
+                "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls";
+
+
+            using (var conn = new NpgsqlConnection(connectionString))
             {
-                var connectionString =
-                    "Server=db.mirvoda.com; Port=5454; User Id=developer; Password=rtfP@ssw0rd; Database=girls";
+                await conn.OpenAsync().ConfigureAwait(false);
 
-
-                using (var conn = new NpgsqlConnection(connectionString))
+                foreach (var movie in extendedMovies)
                 {
-                    await conn.OpenAsync().ConfigureAwait(false);
-
-                    foreach (var movie in extendedMovies)
+                    try
                     {
                         var command =
                             "INSERT INTO extended (id, name, premiere_date, genres, director, stars, storyline, synopsis, rating) " +
@@ -519,10 +543,11 @@ namespace BD_MarLen
                             await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                         }
                     }
+                    catch (Exception ex)
+                    {
+//                            MessageBox.Show(ex.Message);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
             }
         }
 
@@ -543,6 +568,20 @@ namespace BD_MarLen
         public class RootObject
         {
             public List<Movie> movie { get; set; }
+        }
+
+        private string formatImdbId(string Id)
+        {
+            var idRequiredLength = 7;
+
+            if (Id.Length < idRequiredLength)
+            {
+                var missing = idRequiredLength - Id.Length;
+
+                return Id.Insert(0, new string('0', missing));
+            }
+
+            return Id;
         }
     }
 }
